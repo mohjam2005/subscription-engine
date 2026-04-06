@@ -48,6 +48,15 @@ php artisan migrate --seed
 php artisan sanctum:install
 php artisan serve
 http://127.0.0.1:8000
+git clone https://github.com/mohjam2005/subscription-engine.git
+cd subscription-engine
+composer install
+cp .env.example .env
+
+php artisan migrate --seed
+php artisan sanctum:install
+php artisan serve
+http://127.0.0.1:8000
 الجدولة (Cron Job)
 سويت أمرين بيشتغلوا يومياً عشان يضبطوا الاشتراكات اللي خلصت مدتها:
 
