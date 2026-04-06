@@ -1,0 +1,419 @@
+{
+    "info": {
+      "name": "Trendline Subscription Engine",
+      "description": "محرك إدارة الاشتراكات - نظام كامل للاشتراكات المتكررة مع دعم الفترات التجريبية وفترة السماح",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+      "version": "1.0.0"
+    },
+    "item": [
+      {
+        "name": "المصادقة (Authentication)",
+        "item": [
+          {
+            "name": "تسجيل مستخدم جديد",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"name\": \"أحمد محمد\",\n    \"email\": \"ahmed@test.com\",\n    \"password\": \"12345678\"\n}"
+              },
+              "url": {
+                "raw": "http://127.0.0.1:8000/api/register",
+                "protocol": "http",
+                "host": ["127", "0", "0", "1"],
+                "port": "8000",
+                "path": ["api", "register"]
+              }
+            }
+          },
+          {
+            "name": "تسجيل دخول",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"email\": \"ahmed@test.com\",\n    \"password\": \"12345678\"\n}"
+              },
+              "url": {
+                "raw": "http://127.0.0.1:8000/api/login",
+                "protocol": "http",
+                "host": ["127", "0", "0", "1"],
+                "port": "8000",
+                "path": ["api", "login"]
+              }
+            }
+          },
+          {
+            "name": "تسجيل خروج",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {token}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "http://127.0.0.1:8000/api/logout",
+                "protocol": "http",
+                "host": ["127", "0", "0", "1"],
+                "port": "8000",
+                "path": ["api", "logout"]
+              }
+            }
+          },
+          {
+            "name": "بيانات حسابي",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {token}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "http://127.0.0.1:8000/api/me",
+                "protocol": "http",
+                "host": ["127", "0", "0", "1"],
+                "port": "8000",
+                "path": ["api", "me"]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "إدارة الخطط (Plans)",
+        "item": [
+          {
+            "name": "جلب كل الخطط",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "http://127.0.0.1:8000/api/plans",
+                "protocol": "http",
+                "host": ["127", "0", "0", "1"],
+                "port": "8000",
+                "path": ["api", "plans"]
+              }
+            }
+          },
+          {
+            "name": "جلب خطة محددة",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "http://127.0.0.1:8000/api/plans/1",
+                "protocol": "http",
+                "host": ["127", "0", "0", "1"],
+                "port": "8000",
+                "path": ["api", "plans", "1"]
+              }
+            }
+          },
+          {
+            "name": "إنشاء خطة جديدة (مشرف)",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {token}",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"name\": \"الباقة الماسية\",\n    \"description\": \"أفضل باقة مع مميزات حصرية\",\n    \"billing_cycle\": \"monthly\",\n    \"price\": 99.99,\n    \"currency\": \"AED\",\n    \"trial_days\": 7,\n    \"is_active\": true\n}"
+              },
+              "url": {
+                "raw": "http://127.0.0.1:8000/api/plans",
+                "protocol": "http",
+                "host": ["127", "0", "0", "1"],
+                "port": "8000",
+                "path": ["api", "plans"]
+              }
+            }
+          },
+          {
+            "name": "تعديل خطة",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {token}",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"price\": 89.99,\n    \"trial_days\": 14\n}"
+              },
+              "url": {
+                "raw": "http://127.0.0.1:8000/api/plans/1",
+                "protocol": "http",
+                "host": ["127", "0", "0", "1"],
+                "port": "8000",
+                "path": ["api", "plans", "1"]
+              }
+            }
+          },
+          {
+            "name": "حذف خطة",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {token}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "http://127.0.0.1:8000/api/plans/4",
+                "protocol": "http",
+                "host": ["127", "0", "0", "1"],
+                "port": "8000",
+                "path": ["api", "plans", "4"]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "إدارة الاشتراكات (Subscriptions)",
+        "item": [
+          {
+            "name": "إنشاء اشتراك جديد",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {token}",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"plan_id\": 1\n}"
+              },
+              "url": {
+                "raw": "http://127.0.0.1:8000/api/subscriptions",
+                "protocol": "http",
+                "host": ["127", "0", "0", "1"],
+                "port": "8000",
+                "path": ["api", "subscriptions"]
+              }
+            }
+          },
+          {
+            "name": "إنشاء اشتراك بدفع فوري (بدون تجربة)",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {token}",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"plan_id\": 3,\n    \"payment_token\": \"tok_visa_4242\"\n}"
+              },
+              "url": {
+                "raw": "http://127.0.0.1:8000/api/subscriptions",
+                "protocol": "http",
+                "host": ["127", "0", "0", "1"],
+                "port": "8000",
+                "path": ["api", "subscriptions"]
+              }
+            }
+          },
+          {
+            "name": "عرض اشتراكي الحالي",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {token}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "http://127.0.0.1:8000/api/subscriptions/my",
+                "protocol": "http",
+                "host": ["127", "0", "0", "1"],
+                "port": "8000",
+                "path": ["api", "subscriptions", "my"]
+              }
+            }
+          },
+          {
+            "name": "عرض كل الاشتراكات (مشرف)",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {token}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "http://127.0.0.1:8000/api/subscriptions",
+                "protocol": "http",
+                "host": ["127", "0", "0", "1"],
+                "port": "8000",
+                "path": ["api", "subscriptions"]
+              }
+            }
+          },
+          {
+            "name": "عرض اشتراك محدد",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {token}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "http://127.0.0.1:8000/api/subscriptions/1",
+                "protocol": "http",
+                "host": ["127", "0", "0", "1"],
+                "port": "8000",
+                "path": ["api", "subscriptions", "1"]
+              }
+            }
+          },
+          {
+            "name": "تجديد الاشتراك (دفع)",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {token}",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"payment_token\": \"tok_visa_4242\"\n}"
+              },
+              "url": {
+                "raw": "http://127.0.0.1:8000/api/subscriptions/1/renew",
+                "protocol": "http",
+                "host": ["127", "0", "0", "1"],
+                "port": "8000",
+                "path": ["api", "subscriptions", "1", "renew"]
+              }
+            }
+          },
+          {
+            "name": "إلغاء الاشتراك",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {token}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "http://127.0.0.1:8000/api/subscriptions/1/cancel",
+                "protocol": "http",
+                "host": ["127", "0", "0", "1"],
+                "port": "8000",
+                "path": ["api", "subscriptions", "1", "cancel"]
+              }
+            }
+          },
+          {
+            "name": "إعادة محاولة الدفع (للمتأخرين)",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {token}",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"payment_token\": \"tok_visa_4242\"\n}"
+              },
+              "url": {
+                "raw": "http://127.0.0.1:8000/api/subscriptions/1/retry-payment",
+                "protocol": "http",
+                "host": ["127", "0", "0", "1"],
+                "port": "8000",
+                "path": ["api", "subscriptions", "1", "retry-payment"]
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "variable": [
+      {
+        "key": "base_url",
+        "value": "http://127.0.0.1:8000/api",
+        "type": "string"
+      },
+      {
+        "key": "token",
+        "value": "",
+        "type": "string"
+      }
+    ]
+  }
