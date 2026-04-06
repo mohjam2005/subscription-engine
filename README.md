@@ -1,59 +1,91 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# مشروع  الاشتراكات  
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## شو هو المشروع؟
+مشروع  الاشتراكات  ، هو مشروع من خلالو بتقدر تعمل تسجيل وتسجيل دخول للمستخدم وممكن ينشأ اشتراك للمستخدم ، ويعطيه فترة تجريبيه حسب الباقة ، كمان ممن يضيف باقة اشتراك  وممكن يلغي 
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## شو سويت بالضبط؟
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+سويت API متكامل يخلينا نسوي كل شي يخص الاشتراكات:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- تسجيل مستخدمين جدد وتسجيل دخول
+- إنشاء باقات اشتراك (شهرية، سنوية، أسبوعية)
+- تحديد سعر الباقة بأي عملة (درهم إماراتي، دولار، جنيه مصري)
+- تحديد فترة تجريبية لكل باقة (مثلاً 7 أيام مجاناً)
+- إنشاء اشتراك للمستخدم
+- تجديد الاشتراك (محاكاة دفع)
+- إلغاء الاشتراك
+- إعادة محاولة الدفع إذا فشل
 
-## Learning Laravel
+## نظام الحالات
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+الاشتراك بيمر بأربع حالات:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**فترة تجريبية:** لما المستخدم يشتري باقة فيها فترة تجريبية، بدخل عطول بدون ما يدفع.
 
-## Laravel Sponsors
+**نشط:** لما يدفع بنجاح، بصير اشتراكو نشط ويقدر يستخدم الخدمة.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+**متأخر:** هاد بيصير لما يفشل الدفع. هون بنعطيه 3 أيام سماح، والخدمة بتضل شغالة عشان لا ينقطع عليه شي.
 
-### Premium Partners
+**ملغي:** إذا ما دفع خلال 3 أيام، أو إذا ألغى بنفسو، بصير الاشتراك ملغي وما بقدر يستخدم الخدمة.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## كيف تبدأ؟
 
-## Contributing
+أول شي لازم تنصب المتطلبات:
+- PHP 8.2 أو أحدث
+- Composer
+- MySQL أو SQLite
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+بعدين تعمل هالخطوات:
 
-## Code of Conduct
+```bash
+git clone https://github.com/mohjam2005/subscription-engine.git
+cd subscription-engine
+composer install
+cp .env.example .env
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+php artisan migrate --seed
+php artisan sanctum:install
+php artisan serve
+http://127.0.0.1:8000
+الجدولة (Cron Job)
+سويت أمرين بيشتغلوا يومياً عشان يضبطوا الاشتراكات اللي خلصت مدتها:
 
-## Security Vulnerabilities
+الأمر الأول: بشوف الاشتراكات اللي خلصت فترتها التجريبية ويحولها إلى "متأخر"
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+الأمر الثاني: بشوف الاشتراكات اللي خلصت فترة السماح (3 أيام) ويلغيها
 
-## License
+عشان تجربهم إيدوي:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+bash
+php artisan subscription:check-expired-trials
+php artisan subscription:process-grace-period
+شو المشاكل اللي واجهتني؟
+في البداية كانت في مشكلة مع rate limiter في Laravel 12، لأن الإصدار الجديد مختلف شوي عن القديم. حليتها إني عرفت الـ rate limiter في ملف bootstrap/app.php.
+
+كمان مشكلة المصادقة مع GitHub، طلع لازم استخدم Token بدل كلمة المرور عشان أقدر أرفع المشروع.
+
+شو كانت أصعب نقطة؟
+أصعب شي كان منطق فترة السماح (Grace Period). كنت متحير كيف أخلي النظام يعطي المستخدم 3 أيام فرصة يدفع فيها بدون ما يقطع عنه الخدمة. في النهاية سويت حقل في قاعدة البيانات إسمو grace_period_ends_at، والـ middleware بتتأكد منو قبل ما تمنع الوصول.
+
+شو كنت بسوي لو عندي وقت أكثر؟
+لو عندي وقت زيادة، كنت راح أضيف:
+
+إشعارات عبر البريد الإلكتروني لما يفشل الدفع
+
+لوحة تحكم للمشرفين يشوفوا كل الاشتراكات
+
+اتصال حقيقي مع Stripe بدل المحاكاة
+
+تقارير وإحصائيات عن الاشتراكات
+
+التقنيات اللي استخدمتها
+Laravel 12
+
+PHP 8.2
+
+MySQL
+
+Laravel Sanctum للمصادقة
+
+Postman لتوثيق الـ API
